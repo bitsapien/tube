@@ -98,7 +98,7 @@ class Tube
 end
     
 port = 3003
-app = Tube::Builder.parse_file('/Users/rahul/mysites/elitmus-campus/config.ru')
+app = Tube::Builder.parse_file('config.ru')
 server = Tube.new(port, app)
 puts "Plugging in Tube at #{port}"
 server.prefork 3
