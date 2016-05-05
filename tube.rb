@@ -1,6 +1,7 @@
 require 'socket'
 require 'http/parser'
 require 'stringio'
+require 'thread'
 class Tube
     def initialize(port, app)
       @server_socket = TCPServer.new(port)
@@ -10,8 +11,10 @@ class Tube
     def start
         loop do
             client_socket = @server_socket.accept
-            connection = Connection.new(client_socket, @app)
-            connection.process
+            Thread.new do
+                connection = Connection.new(client_socket, @app)
+                connection.process
+            end
         end
     end
 
@@ -86,7 +89,7 @@ class Tube
 end
     
 port = 3003
-app = Tube::Builder.parse_file('config.ru')
+app = Tube::Builder.parse_file('/Users/rahul/mysites/elitmus-campus/config.ru')
 server = Tube.new(port, app)
 puts "Plugging in Tube at #{port}"
 server.start
