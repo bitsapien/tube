@@ -25,6 +25,7 @@ class Tube
                 start
             end
         end
+        Process.waitall
     end
 
     class Connection
