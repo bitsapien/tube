@@ -18,6 +18,15 @@ class Tube
         end
     end
 
+    def prefork(workers)
+        workers.times do
+            fork do
+                puts "Running on Process ID: #{Process.pid}"
+                start
+            end
+        end
+    end
+
     class Connection
         def initialize(socket, app)
              @socket = socket
@@ -92,4 +101,4 @@ port = 3003
 app = Tube::Builder.parse_file('/Users/rahul/mysites/elitmus-campus/config.ru')
 server = Tube.new(port, app)
 puts "Plugging in Tube at #{port}"
-server.start
+server.prefork 3
